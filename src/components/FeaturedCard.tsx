@@ -10,10 +10,12 @@ import type { YoutubeVideo } from "../types/youtube";
 export default function FeaturedCard({
   video,
   badge,
+  channelAvatar,
   className,
 }: {
   video: YoutubeVideo;
   badge: "Popular" | "Trending";
+  channelAvatar?: string;
   className?: string;
 }) {
   const thumb =
@@ -62,7 +64,7 @@ export default function FeaturedCard({
           <div className="flex items-center gap-2">
             <div className="flex items-center gap-3">
               <div className="flex items-center gap-2">
-                <Avatar avatarClassName="w-5 h-5" />
+                <Avatar src={channelAvatar} avatarClassName="w-5 h-5" />
                 <span className="text-xs font-medium text-neutral-600">
                   {video.snippet.channelTitle}
                 </span>

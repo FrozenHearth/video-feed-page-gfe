@@ -7,12 +7,16 @@ export default function useRecommendedVideos(categoryId: string) {
   const [recommendedVideos, setRecommendedVideos] = useState<YoutubeVideo[]>(
     [],
   );
+  const [channelAvatars, setChannelAvatars] = useState<Record<string, string>>(
+    {},
+  );
 
   useEffect(() => {
     const controller = new AbortController();
 
     async function fetchRecommendedVideos() {
       setStatus("loading");
+      setChannelAvatars({});
       try {
         const params = new URLSearchParams({
           part: "snippet,contentDetails,statistics",
@@ -29,7 +33,30 @@ export default function useRecommendedVideos(categoryId: string) {
           signal: controller.signal,
         });
         const data = await res.json();
-        setRecommendedVideos(data.items ?? []);
+        const items: YoutubeVideo[] = data.items ?? [];
+        const channelIds = [
+          ...new Set(items.map((video) => video.snippet.channelId)),
+        ].join(",");
+
+        if (channelIds) {
+          const channelsRes = await fetch(
+            `/api/youtube/channels?part=snippet&id=${channelIds}`,
+            { signal: controller.signal },
+          );
+          const channelsData = await channelsRes.json();
+          const avatars: Record<string, string> = {};
+
+          for (const channel of channelsData.items ?? []) {
+            avatars[channel.id] =
+              channel.snippet?.thumbnails?.default?.url ??
+              channel.snippet?.thumbnails?.medium?.url ??
+              "";
+          }
+
+          setChannelAvatars(avatars);
+        }
+
+        setRecommendedVideos(items);
         setStatus(res.ok ? "idle" : "error");
       } catch (err) {
         if (controller.signal.aborted) return;
@@ -44,5 +71,5 @@ export default function useRecommendedVideos(categoryId: string) {
     };
   }, [categoryId]);
 
-  return { status, recommendedVideos };
+  return { status, recommendedVideos, channelAvatars };
 }

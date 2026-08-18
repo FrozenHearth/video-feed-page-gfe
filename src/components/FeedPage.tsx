@@ -12,7 +12,10 @@ import { splitFeed } from "../utils/splitFeed";
 import { DISCOVER_CATEGORY_ID } from "../utils/feedCategories";
 import type { YoutubeVideo } from "../types/youtube";
 
-function toVideoCardInfo(video: YoutubeVideo) {
+function toVideoCardInfo(
+  video: YoutubeVideo,
+  channelAvatars: Record<string, string>,
+) {
   return {
     id: video.id,
     thumbnail: {
@@ -29,7 +32,7 @@ function toVideoCardInfo(video: YoutubeVideo) {
       time: relativeDate(video.snippet.publishedAt),
     },
     userAvatar: {
-      src: "/avatar-empty.svg",
+      src: channelAvatars[video.snippet.channelId] ?? "/avatar-empty.svg",
       altText: video.snippet.channelTitle,
     },
   };
@@ -38,7 +41,8 @@ function toVideoCardInfo(video: YoutubeVideo) {
 export default function FeedPage() {
   const [categoryId, setCategoryId] = useState(DISCOVER_CATEGORY_ID);
   const { categories } = useCategories();
-  const { status, recommendedVideos } = useRecommendedVideos(categoryId);
+  const { status, recommendedVideos, channelAvatars } =
+    useRecommendedVideos(categoryId);
   const thumbs = useCategoryThumbs(categories.map((category) => category.id));
   const { popular, trending, rest } = splitFeed(recommendedVideos);
 
@@ -71,10 +75,18 @@ export default function FeedPage() {
           <header className="relative col-span-full">
             <div className="featured-row">
               {popular ? (
-                <FeaturedCard video={popular} badge="Popular" />
+                <FeaturedCard
+                  video={popular}
+                  badge="Popular"
+                  channelAvatar={channelAvatars[popular.snippet.channelId]}
+                />
               ) : null}
               {trending ? (
-                <FeaturedCard video={trending} badge="Trending" />
+                <FeaturedCard
+                  video={trending}
+                  badge="Trending"
+                  channelAvatar={channelAvatars[trending.snippet.channelId]}
+                />
               ) : null}
             </div>
             <div
@@ -84,7 +96,10 @@ export default function FeedPage() {
           </header>
           <section className="col-span-full grid grid-cols-1 gap-x-4 gap-y-8 sm:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4">
             {rest.map((video) => (
-              <VideoCard key={video.id} videoInfo={toVideoCardInfo(video)} />
+              <VideoCard
+                key={video.id}
+                videoInfo={toVideoCardInfo(video, channelAvatars)}
+              />
             ))}
           </section>
         </>
