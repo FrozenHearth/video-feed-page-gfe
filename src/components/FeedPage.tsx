@@ -48,14 +48,14 @@ export default function FeedPage() {
 
   return (
     <main className="layout-grid min-h-dvh gap-y-6 py-12">
-      <div className="col-span-full">
+      <header className="col-span-full mt-6">
         <CategoryChips
           categories={categories}
           selectedId={categoryId}
           thumbs={thumbs}
           onSelect={setCategoryId}
         />
-      </div>
+      </header>
       {status === "loading" ? (
         <div className="col-span-full">
           <FeedPageSkeleton />

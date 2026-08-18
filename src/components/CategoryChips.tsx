@@ -23,7 +23,7 @@ export default function CategoryChips({
   return (
     <div className="relative">
       <nav
-        className="flex gap-3 overflow-x-auto pr-28 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
+        className="flex gap-3 overflow-x-auto pr-28 scrollbar-none [&::-webkit-scrollbar]:hidden"
         aria-label="Video categories"
       >
         <button
