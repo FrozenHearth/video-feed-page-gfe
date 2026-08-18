@@ -1,7 +1,6 @@
 import { cn } from "../utils/cn";
 import { Link } from "react-router";
 import { RiVerifiedBadgeFill } from "react-icons/ri";
-import { CHANNEL } from "../utils/data";
 import { bigNumberFormatter } from "../utils/bigNumberFormatter";
 
 export default function VideoCard({
@@ -34,7 +33,7 @@ export default function VideoCard({
 }) {
   const videoUrl = `/watch/${videoInfo.id}`;
   const channelUrl = "/channel/videos";
-  const creatorName = videoInfo.userAvatar.altText ?? CHANNEL.name;
+  const creatorName = videoInfo.userAvatar.altText || "";
 
   return (
     <article className="group flex flex-col gap-3">
