@@ -1,5 +1,6 @@
-import clsx from "clsx";
+import { cn } from "../utils/cn";
 import { Link } from "react-router";
+import { RiVerifiedBadgeFill } from "react-icons/ri";
 import { CHANNEL } from "../utils/data";
 import { bigNumberFormatter } from "../utils/bigNumberFormatter";
 
@@ -39,7 +40,7 @@ export default function VideoCard({
     <article className="group flex flex-col gap-3">
       <Link to={videoUrl} className="cursor-pointer">
         <figure
-          className={clsx(
+          className={cn(
             "relative m-0 h-48 flex flex-col justify-end items-end pr-1 pb-1 rounded-lg overflow-hidden",
             videoInfo.thumbnail.className,
           )}
@@ -47,16 +48,20 @@ export default function VideoCard({
           <img
             src={videoInfo.thumbnail.src}
             alt={videoInfo.thumbnail.altText}
+            width={320}
+            height={180}
+            loading="lazy"
+            decoding="async"
             className="absolute inset-0 h-full w-full object-cover rounded-lg"
           />
           <div
-            className={clsx(
+            className={cn(
               "relative flex justify-center items-center bg-neutral-950 px-1 py-0.5 rounded",
               videoInfo.thumbnail.durationClassName,
             )}
           >
             <span
-              className={clsx(
+              className={cn(
                 "font-normal text-xs text-white",
                 videoInfo.thumbnail.durationTextClassName,
               )}
@@ -66,9 +71,7 @@ export default function VideoCard({
           </div>
         </figure>
       </Link>
-      <div
-        className={clsx("flex gap-2 self-stretch", videoInfo.meta.className)}
-      >
+      <div className={cn("flex gap-2 self-stretch", videoInfo.meta.className)}>
         <Link
           to={channelUrl}
           className="shrink-0"
@@ -77,7 +80,7 @@ export default function VideoCard({
           <img
             src={videoInfo.userAvatar.src}
             alt=""
-            className={clsx(
+            className={cn(
               "h-9 w-9 rounded-full object-cover",
               videoInfo.userAvatar.className,
             )}
@@ -86,7 +89,7 @@ export default function VideoCard({
         <div className="flex min-w-0 flex-col gap-2 grow">
           <Link to={videoUrl} className="cursor-pointer">
             <span
-              className={clsx(
+              className={cn(
                 "font-medium text-sm text-neutral-900 group-hover:font-semibold",
                 videoInfo.meta.titleClassName,
               )}
@@ -94,9 +97,17 @@ export default function VideoCard({
               {videoInfo.meta.title}
             </span>
           </Link>
+          <Link
+            to={channelUrl}
+            className="flex w-fit items-center gap-1 font-normal text-xs text-neutral-600 hover:text-neutral-900"
+            onClick={(event) => event.stopPropagation()}
+          >
+            {creatorName}
+            <RiVerifiedBadgeFill className="h-4 w-4 text-indigo-700" />
+          </Link>
           <Link to={videoUrl} className="cursor-pointer">
             <div
-              className={clsx(
+              className={cn(
                 "flex gap-1 self-stretch",
                 videoInfo.meta.statsClassName,
               )}
@@ -109,13 +120,6 @@ export default function VideoCard({
                 {videoInfo.meta.time}
               </span>
             </div>
-          </Link>
-          <Link
-            to={channelUrl}
-            className="w-fit font-normal text-xs text-neutral-600 hover:text-neutral-900"
-            onClick={(event) => event.stopPropagation()}
-          >
-            {creatorName}
           </Link>
         </div>
       </div>

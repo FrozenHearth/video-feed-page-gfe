@@ -1,4 +1,4 @@
-import clsx from "clsx";
+import { cn } from "../utils/cn";
 import EmptyAvatar from "./EmptyAvatar";
 
 export default function Avatar({
@@ -14,7 +14,7 @@ export default function Avatar({
 }) {
   return (
     <div
-      className={clsx(
+      className={cn(
         "shrink-0 overflow-hidden rounded-full",
         avatarClassName ?? "h-28 w-28",
         containerClassName,
@@ -22,7 +22,15 @@ export default function Avatar({
       )}
     >
       {src ? (
-        <img src={src} alt={altText} className="h-full w-full object-cover" />
+        <img
+          src={src}
+          alt={altText}
+          width={24}
+          height={24}
+          loading="lazy"
+          decoding="async"
+          className="h-full w-full object-cover"
+        />
       ) : (
         <EmptyAvatar />
       )}

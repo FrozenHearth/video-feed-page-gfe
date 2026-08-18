@@ -1,10 +1,10 @@
-import clsx from "clsx";
+import { cn } from "../utils/cn";
 
 export default function EmptyAvatar({ className }: { className?: string }) {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
-      className={clsx("h-full w-full text-[#B7B7B6]", className)}
+      className={cn("h-full w-full text-[#B7B7B6]", className)}
       viewBox="0 0 96 96"
       fill="none"
       aria-hidden="true"

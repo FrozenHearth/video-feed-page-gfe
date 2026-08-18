@@ -1,4 +1,4 @@
-import clsx from "clsx";
+import { cn } from "../utils/cn";
 
 export default function Button({
   buttonClassName,
@@ -13,7 +13,7 @@ export default function Button({
 }) {
   return (
     <button
-      className={clsx(
+      className={cn(
         "flex items-center justify-center px-4 py-2 rounded-md",
         ...buttonClassName,
       )}
